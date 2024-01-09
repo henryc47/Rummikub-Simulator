@@ -1,7 +1,7 @@
 from random import shuffle
 
 #global constants
-colour_list = ["black","red","orange","blue"]
+colour_list = ["Black","Red","Orange","Blue"]
 max_number = 13
 num_tile_copies = 2
 num_jokers = 2
@@ -14,6 +14,12 @@ class Tile:
         self.colour = colour
         self.number = number
 
+    def display(self):
+        if self.is_joker:
+            print("Joker")
+        else:
+            print(self.colour," ",self.number)
+
 class Bag:
     __slots__ = ("tiles")
     def __init__(self):
@@ -21,7 +27,7 @@ class Bag:
         shuffle(self.tiles)
     
     def create_tiles(self,colours : list[str],max_number : int,num_copies : int, num_jokers : int):
-        tiles = []
+        tiles : list[Tile] = []
         #create regular tiles
         for colour in colours:
             for i in range(1,max_number+1):
@@ -34,9 +40,9 @@ class Bag:
             tiles.append(joker)
         return tiles
     
-
+    def display_tiles(self):
+        for tile in self.tiles:
+            tile.display()
 
 if __name__ == "__main__":
     game_bag = Bag()
-    print(len(game_bag.tiles))
-
