@@ -3,12 +3,13 @@ from typing import Type
 
 #global constants
 colour_list = ["Black","Red","Orange","Blue"]
+num_unique_colours = len(colour_list)
 max_number = 13
 num_tile_copies = 2
 num_jokers = 2
 starting_hand_size = 14
 
-
+#the Tile stores information about a particular tile
 class Tile:
     __slots__ = ("is_joker","colour",'number')
     def __init__(self,is_joker : bool,colour : str,number : int):
@@ -36,7 +37,7 @@ class Tile:
             else:
                 return False
 
-#the bag stores the tiles which have not yet been selected by the player
+#the Bag stores the tiles which have not yet been selected by the player
 class Bag:
     __slots__ = ("tiles")
     #fill the bag with tiles and shuffle them
@@ -74,7 +75,7 @@ class Bag:
             new_tile = self.tiles.pop()
             return new_tile
 
-#hand class stores the contents of a players hand
+#Hand class stores the contents of a players hand
 class Hand:
     __slots__ = ("bag","tiles")
     def __init__(self,bag : Bag,starting_hand_size : int):
@@ -111,13 +112,38 @@ class Hand:
         print("num tiles in hand = ",len(self.tiles))
         print()
 
-#The player class represents a player agent, includes a hand object which stores the games hand. Derived classes encode strategies
+#The Player class represents a player agent, includes a hand object which stores the games hand. Derived classes encode strategies
 class Player:
     __slots__ = ("hand")
     def __init__(self,hand : Hand):
         self.hand = hand
 
+#the Number_Sequence class stores the details of a combination which consists of a continuous sequence of numbers, all of the same colour
+class Number_Sequence:
+    __slots__ = ("colour","start","end","jokers","tiles","max_size")
+    def __init__(self,colour : str,start : int, end :int, jokers : list[int],tiles : list[Tile],max_size : int):
+        self.colour = colour #colour of the tiles in the sequence
+        self.start = start #starting number in the sequence
+        self.end = end #highest number in the sequence
+        self.jokers = jokers #list of which numbers have been replaced by jokers
+        self.tiles = tiles #list of tiles belonging to the number sequence, no particular order
+        self.max_size = max_size #max size of this type of sequence
 
+#the Colour_Combination class stores the details of the combination which consists of the same number, but all different colours
+class Colour_Combination:
+    __slots__ = ("colours","num_jokers","tiles","max_size")
+    def __init__(self,colours : list[str],num_jokers : int, tiles : list[Tile],max_size : int):
+        self.colours = colours
+        self.num_jokers = num_jokers
+        self.tiles = tiles
+        self.max_size = max_size
+    
+
+#the Combination class stores a combination of tiles placed on the board
+class Combination:
+    __slots__ = ("type")
+
+class Game:
 
 
 if __name__ == "__main__":
