@@ -117,6 +117,9 @@ class Player:
     __slots__ = ("hand")
     def __init__(self,hand : Hand):
         self.hand = hand
+    
+    def display_hand(self):
+        self.hand.display_hand()
 
 #the Number_Sequence class stores the details of a combination which consists of a continuous sequence of numbers, all of the same colour
 class Number_Sequence:
@@ -137,26 +140,42 @@ class Colour_Combination:
         self.num_jokers = num_jokers
         self.tiles = tiles
         self.max_size = max_size
-    
 
-#the Combination class stores a combination of tiles placed on the board
-class Combination:
-    __slots__ = ("type")
+#board class stores all the tiles that have been played
+class Board:
+    __slots__ = ("tiles")
+    def __init__(self):
+        self.tiles : list[Tile] = []
+
 
 class Game:
+    __slots__ = ("bag","board","players")
+    def __init__(self,num_players : int,starting_hand_size : int):
+        self.bag = Bag() #bag for the game
+        self.board = Board() #board for the game
+        self.players = self.create_players(num_players,starting_hand_size)
+    
+    def create_players(self,num_players : int,starting_hand_size : int) -> list[Player]:
+        list_players : list[Player] = []
+        for i in range(num_players):
+            new_hand = Hand(self.bag,starting_hand_size)
+            new_player = Player(new_hand)
+            list_players.append(new_player)
+        
+        return list_players
+
+    def display_player_hands(self):
+        for i,player in enumerate(self.players):
+            print("Player ",i+1," Hand")
+            player.display_hand()
+    
+    def display_bag_tiles(self):
+        print("Bag tiles")
+        self.bag.display_tiles()
 
 
 if __name__ == "__main__":
-    game_bag = Bag()
-    hand = Hand(game_bag,starting_hand_size)
-    print("hand")
-    hand.display_hand()
-    found_tile = hand.remove_tile_from_hand(True,"",-1)
-    print("found tile = ",found_tile)
-    print("hand after picking joker ")
-    hand.display_hand()
-    found_tile = hand.remove_tile_from_hand(False,"Red",8)
-    print("found tile = ",found_tile)
-    print("hand after picking Red 8 ")
-    hand.display_hand()
+    game = Game(4,starting_hand_size)
+    game.display_player_hands()
+    game.display_bag_tiles()
     
