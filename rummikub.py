@@ -1,4 +1,5 @@
 from random import shuffle
+from typing import Type
 
 #global constants
 colour_list = ["Black","Red","Orange","Blue"]
@@ -56,6 +57,7 @@ class Bag:
             new_tile = self.tiles.pop()
             return new_tile
 
+#hand class stores the contents of a players hand
 class Hand:
     __slots__ = ("bag","tiles")
     def __init__(self,bag : Bag,starting_hand_size : int):
@@ -69,14 +71,32 @@ class Hand:
             tiles.append(new_tile)
         return tiles
 
+    def pick_tile_from_bag(self):
+        new_tile = self.bag.pick_tile()
+        self.tiles.append(new_tile)
+
     def display_hand(self):
         for tile in self.tiles:
             tile.display()
+
+#The player class represents a player agent, includes a hand object which stores the games hand. Derived classes encode strategies
+class Player:
+    __slots__ = ("hand")
+    def __init__(self,hand : Hand):
+        self.hand = hand
+
+
+
 
 if __name__ == "__main__":
     game_bag = Bag()
     hand = Hand(game_bag,starting_hand_size)
     print("hand")
+    hand.display_hand()
+    print("in hand = ",len(hand.tiles))
+    print()
+    hand.pick_tile_from_bag()
+    print("hand after picking")
     hand.display_hand()
     print("in hand = ",len(hand.tiles))
     print()
